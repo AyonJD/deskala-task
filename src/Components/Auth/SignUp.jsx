@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
+import Spinner from '../Spinner/Spinner';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -30,9 +31,9 @@ const SignUp = () => {
 
     let signInError;
 
-    // if (loading || gLoading || updating) {
-    //     return <Loading></Loading>
-    // }
+    if (loading || gLoading) {
+        return <Spinner></Spinner>
+    }
 
     if (error || gError ) {
         signInError = <p className='text-red-500'><small>{error?.message || gError?.message}</small></p>
