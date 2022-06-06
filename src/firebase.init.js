@@ -5,14 +5,6 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// const firebaseConfig = {
-//     apiKey: "AIzaSyDuCPZn6TV8Nu4y9VIE7K6QltlbPd7cFBQ",
-//     authDomain: "deskala-task.firebaseapp.com",
-//     projectId: "deskala-task",
-//     storageBucket: "deskala-task.appspot.com",
-//     messagingSenderId: "785579418984",
-//     appId: "1:785579418984:web:a307580ff836e705d5a2dd"
-// };
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_apiKey,
@@ -23,7 +15,6 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_appId
 };
 
-// console.log(firebaseConfig);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

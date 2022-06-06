@@ -1,16 +1,51 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate  } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
+    const [user] = useAuthState(auth);
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
+    const [
+        createUserWithEmailAndPassword,
+        EmailUser,
+        loading,
+        error,
+    ] = useCreateUserWithEmailAndPassword(auth);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [user]);
+
+    let signInError;
+
+    // if (loading || gLoading || updating) {
+    //     return <Loading></Loading>
+    // }
+
+    if (error || gError ) {
+        signInError = <p className='text-red-500'><small>{error?.message || gError?.message}</small></p>
+    }
+
+    if (EmailUser || gUser) {
+        console.log(EmailUser || gUser);
+    }
 
     const onSubmitParam = async data => {
-        console.log(data);
+        console.log(data)
+        await createUserWithEmailAndPassword(data.email, data.password);
+        navigate('/');
         reset()
     }
     return (
@@ -108,7 +143,7 @@ const SignUp = () => {
                     <div className="divider">OR</div>
                     <div className='flex flex-row items-center justify-center'>
                             <button className='mx-4'><img className='w-9' src={FacebookLogo} alt="" /></button>
-                            <button className='mx-4'><img className='w-9' src={GoogleLogo} alt="" /></button>
+                            <button onClick={() => signInWithGoogle()} className='mx-4'><img className='w-9' src={GoogleLogo} alt="" /></button>
                             <button className='mx-4'><img className='w-9' src={GithubLogo} alt="" /></button>
                         </div>
                 </div>
