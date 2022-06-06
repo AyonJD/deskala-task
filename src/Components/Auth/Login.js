@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useForm } from "react-hook-form";
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
 
 const Login = () => {
+    const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
+    const [email, setEmail] = useState('');
+
+    const onSubmitParam = data => {
+        console.log(data);
+        reset()
+    }
 
     return (
         <>
@@ -13,7 +21,7 @@ const Login = () => {
                 <div className="card w-96 bg-base-100 shadow-2xl">
                     <div className="card-body">
                         <h2 className="text-center text-2xl font-bold mb-2">Login</h2>
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmitParam)}>
 
                             <div className="form-control w-full max-w-xs">
                                 <label className="label">
@@ -23,7 +31,25 @@ const Login = () => {
                                     type="email"
                                     placeholder="enter your email id"
                                     className="input input-bordered w-full max-w-xs"
+                                    {...register("email", {
+                                        required: {
+                                            value: true,
+                                            message: 'Email is Required'
+                                        },
+                                        pattern: {
+                                            value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                                            message: 'Provide a valid Email'
+                                        }
+                                    })}
+                                    onKeyUp={(e) => {
+                                        trigger('email')
+                                        setEmail(e.target.value)
+                                    }}
                                 />
+                                <label className="label">
+                                    {errors.email?.type === 'required' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
+                                    {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
+                                </label>
                             </div>
                             <div className="form-control w-full max-w-xs mt-5">
                                 <label className="label">
@@ -33,7 +59,20 @@ const Login = () => {
                                     type="password"
                                     placeholder="enter your password"
                                     className="input input-bordered w-full max-w-xs"
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                        pattern: {
+                                            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                            message: "Minimum eight characters, at least one letter and one number"
+                                        }
+                                    })}
+                                    onKeyUp={() => {
+                                        trigger('password')
+                                    }}
                                 />
+                                <label className="label">
+                                    <small className='text-red-500'>{errors?.password?.message}</small>
+                                </label>
                             </div>
                             <div className="text-center mt-10">
                                 <input className='btn btn-primary w-1/2 max-w-xs text-white' type="submit" value="Login" />
