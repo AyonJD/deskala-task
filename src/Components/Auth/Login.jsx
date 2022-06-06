@@ -51,7 +51,7 @@ const Login = () => {
                                     {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
                                 </label>
                             </div>
-                            <div className="form-control w-full max-w-xs mt-5">
+                            <div className="form-control w-full max-w-xs mt-2">
                                 <label className="label">
                                     <span className="label-text font-semibold text-black">Password</span>
                                 </label>
@@ -62,11 +62,11 @@ const Login = () => {
                                     {...register('password', {
                                         required: 'Password is required',
                                         pattern: {
-                                            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                                            message: "Minimum eight characters, at least one letter and one number"
+                                            value: /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/,
+                                            message: "At least one uppercase, one lowercase, one number and one special character"
                                         }
                                     })}
-                                    onKeyUp={() => {
+                                    onKeyUp={(e) => {
                                         trigger('password')
                                     }}
                                 />
