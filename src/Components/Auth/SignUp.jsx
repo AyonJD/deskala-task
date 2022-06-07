@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithFacebook, useSignInWithGithub, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import FacebookLogo from '../../Assets/Social/facebook.svg';
@@ -13,6 +13,9 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [user] = useAuthState(auth);
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [signInWithFacebook, fUser, fLoading, fError] = useSignInWithFacebook(auth);
+    const [signInWithGithub, gitUser, gitLoading, gitError] = useSignInWithGithub(auth);
+
     const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
     const [
         createUserWithEmailAndPassword,
@@ -31,11 +34,11 @@ const SignUp = () => {
 
     let signInError;
 
-    if (loading || gLoading) {
+    if (loading || gLoading || fLoading || gitLoading) {
         return <Spinner></Spinner>
     }
 
-    if (error || gError ) {
+    if (error || gError || fError || gitError) {
         signInError = <p className='text-red-500'><small>{error?.message || gError?.message}</small></p>
     }
 
@@ -143,9 +146,9 @@ const SignUp = () => {
                     <p className='text-center'><small>Already have an account? <Link className='text-primary' to="/login">Please login</Link></small></p>
                     <div className="divider">OR</div>
                     <div className='flex flex-row items-center justify-center'>
-                            <button className='mx-4'><img className='w-9' src={FacebookLogo} alt="" /></button>
+                            <button onClick={() => signInWithFacebook()} className='mx-4'><img className='w-9' src={FacebookLogo} alt="" /></button>
                             <button onClick={() => signInWithGoogle()} className='mx-4'><img className='w-9' src={GoogleLogo} alt="" /></button>
-                            <button className='mx-4'><img className='w-9' src={GithubLogo} alt="" /></button>
+                            <button onClick={() => signInWithGithub()} className='mx-4'><img className='w-9' src={GithubLogo} alt="" /></button>
                         </div>
                 </div>
             </div>

@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
+import { useAuthState, useSignInWithFacebook, useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [signInWithFacebook, fUser, fLoading, fError] = useSignInWithFacebook(auth);
+    const [signInWithGithub, gitUser, gitLoading, gitError] = useSignInWithGithub(auth);
     const [email, setEmail] = useState('');
+    const [user] = useAuthState(auth);
+    const navigate = useNavigate()
+
+    if (user) { 
+        navigate('/')
+    }
 
     const onSubmitParam = data => {
         console.log(data);
@@ -81,9 +92,9 @@ const Login = () => {
                         <p className='text-center'><small>Don't have an account? <Link className='text-primary' to="/signup">Join Now</Link></small></p>
                         <div className="divider">OR</div>
                         <div className='flex flex-row items-center justify-center'>
-                            <button className='mx-4'><img className='w-9' src={FacebookLogo} alt="" /></button>
-                            <button className='mx-4'><img className='w-9' src={GoogleLogo} alt="" /></button>
-                            <button className='mx-4'><img className='w-9' src={GithubLogo} alt="" /></button>
+                            <button onClick={() => signInWithFacebook()} className='mx-4'><img className='w-9' src={FacebookLogo} alt="" /></button>
+                            <button onClick={() => signInWithGoogle()} className='mx-4'><img className='w-9' src={GoogleLogo} alt="" /></button>
+                            <button onClick={() => signInWithGithub()} className='mx-4'><img className='w-9' src={GithubLogo} alt="" /></button>
                         </div>
                     </div>
                 </div>
