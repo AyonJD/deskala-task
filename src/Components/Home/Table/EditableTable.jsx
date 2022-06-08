@@ -1,10 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
-// import { Form, Table } from "react-bootstrap";
-// import { PencilFill, Save, Trash, XSquare } from 'react-bootstrap-icons';
 import { BsPencilSquare, BsSaveFill, BsFillTrashFill, BsXSquareFill } from 'react-icons/bs';
 import {TiArrowSortedDown} from 'react-icons/ti';
 import './EditableTable.css';
-// import TablePagination from "../TablePagination";
 
 const EditableTable = ({ columns, rows, actions }) => {
   const [isEditMode, setIsEditMode] = useState(false);
