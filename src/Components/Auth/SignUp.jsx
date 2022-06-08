@@ -26,14 +26,6 @@ const SignUp = () => {
 
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (user) {
-    //         navigate('/');
-    //     }
-            
-           
-    // }, [user])
-
 
     let signInError;
 
@@ -50,22 +42,22 @@ const SignUp = () => {
     }
 
     const onSubmitParam = async data => {
-        console.log(data)
-        await createUserWithEmailAndPassword(data.email, data.password);
+        const { email, password, number } = data;
+        const registeredUser = { email, password, number };
+        await createUserWithEmailAndPassword(email, password);
 
         fetch(`http://localhost:5000/users`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(user)
+                body: JSON.stringify(registeredUser)
             })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
                 }
             )
-
         navigate('/');
         reset()
     }
