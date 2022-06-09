@@ -4,28 +4,19 @@ import {TiArrowSortedDown} from 'react-icons/ti';
 import './EditableTable.css';
 
 const EditableTable = ({ columns, rows, actions }) => {
+  console.log(rows)
   const [isEditMode, setIsEditMode] = useState(false);
   const [rowIDToEdit, setRowIDToEdit] = useState(undefined);
   const [rowsState, setRowsState] = useState(rows);
+  useEffect(() => {
+    setRowsState(rows)
+   }, [rows])
   const [editedRow, setEditedRow] = useState();
 
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    if (currentPage >= rows.length / pageSize)
-      setCurrentPage(1);
-  }, [pageSize])
-
-  useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
-
-    const newData = rows.slice(firstPageIndex, lastPageIndex);
-
-    setRowsState(newData);
-  }, [currentPage, pageSize]);
-
+  // console.log(rowsState);
+  // rows?.map(row => console.log(row))
   const handleEdit = (rowID) => {
     setIsEditMode(true);
     setEditedRow(undefined);
@@ -34,7 +25,7 @@ const EditableTable = ({ columns, rows, actions }) => {
 
   const handleRemoveRow = (rowID) => {
     const newData = rowsState.filter(row => {
-      return row.id !== rowID ? row : null
+      return row._id !== rowID ? row : null
     });
 
     setRowsState(newData);
@@ -59,10 +50,10 @@ const EditableTable = ({ columns, rows, actions }) => {
       setIsEditMode(false);
 
       const newData = rowsState.map(row => {
-        if (row.id === editedRow.id) {
-          if (editedRow.firstName) row.firstName = editedRow.firstName;
-          if (editedRow.lastName) row.lastName = editedRow.lastName;
-          if (editedRow.role) row.role = editedRow.role;
+        if (row._id === editedRow.id) {
+          if (editedRow.name) row.name = editedRow.name;
+          if (editedRow.dob) row.dob = editedRow.dob;
+          if (editedRow.email) row.email = editedRow.email;
         }
 
         return row;
@@ -73,6 +64,7 @@ const EditableTable = ({ columns, rows, actions }) => {
     }, 1000)
   }
 
+  
   return (
     <div className=''>
       <table className='w-full table '>
@@ -84,42 +76,43 @@ const EditableTable = ({ columns, rows, actions }) => {
                   </tr>
         </thead>
         <tbody>
-        {rowsState.map((row, index) => {
+          {rowsState.map((row, index) => {
+          
           if (index < pageSize) {
-            return <tr key={row.id}>
+            return <tr key={row._id}>
               <td>
-                {row.id}
+                {row._id}
               </td>
               <td>
-                { isEditMode && rowIDToEdit === row.id
+                { isEditMode && rowIDToEdit === row._id
                   ? <input
                     type='text'
-                    defaultValue={editedRow ? editedRow.firstName : row.firstName}
-                    id={row.id}
-                    name='firstName'
-                    onChange={ (e) => handleOnChangeField(e, row.id) }
+                    defaultValue={editedRow ? editedRow.name : row.name}
+                    id={row._id}
+                    name='name'
+                    onChange={ (e) => handleOnChangeField(e, row._id) }
                   />
-                  : row.firstName
+                  : row.name
                 }
               </td>
               <td>
-                { isEditMode && rowIDToEdit === row.id
+                { isEditMode && rowIDToEdit === row._id
                   ? <input
                     type='text'
-                    defaultValue={editedRow ? editedRow.lastName : row.lastName}
-                    id={row.id}
-                    name='lastName'
-                    onChange={ (e) => handleOnChangeField(e, row.id) }
+                    defaultValue={editedRow ? editedRow.dob : row.dob}
+                    id={row._id}
+                    name='dob'
+                    onChange={ (e) => handleOnChangeField(e, row._id) }
                   />
-                  : row.lastName
+                  : row.dob
                 }
               </td>
               <td>
-                { isEditMode && rowIDToEdit === row.id
-                  ? <input onChange={e => handleOnChangeField(e, row.id)} name="role" defaultValue={row.role}>
+                { isEditMode && rowIDToEdit === row._id
+                  ? <input onChange={e => handleOnChangeField(e, row._id)} name="email" defaultValue={row.email}>
                     
                   </input>
-                  : row.role
+                  : row.email
                 }
               </td>
               <td>Shortlist</td>
@@ -134,20 +127,20 @@ const EditableTable = ({ columns, rows, actions }) => {
                 </td>
               {actions &&
               <td>
-                { isEditMode && rowIDToEdit === row.id
+                { isEditMode && rowIDToEdit === row._id
                   ? <button onClick={ () => handleSaveRowChanges() } className='custom-table__action-btn ' disabled={!editedRow}>
                     <BsSaveFill />
                   </button>
-                  : <button  onClick={ () => handleEdit(row.id) } className='custom-table__action-btn'>
+                  : <button  onClick={ () => handleEdit(row._id) } className='custom-table__action-btn'>
                     <BsPencilSquare />
                   </button>
                 }
 
-                { isEditMode && rowIDToEdit === row.id
+                { isEditMode && rowIDToEdit === row._id
                   ? <button onClick={() => handleCancelEditing()} className='custom-table__action-btn'>
                     <BsXSquareFill />
                   </button>
-                  : <button onClick={() => handleRemoveRow(row.id)} className='custom-table__action-btn'>
+                  : <button onClick={() => handleRemoveRow(row._id)} className='custom-table__action-btn'>
                     <BsFillTrashFill />
                   </button>
                 }

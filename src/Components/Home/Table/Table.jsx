@@ -1,35 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EditableTable from "./EditableTable";
 
 function Table() {
+  const [candidate, setCandidate] = useState([]);
   const columns = [
     { field: 'id', fieldName: '#' },
-    { field: 'firstName', fieldName: 'Name' },
-    { field: 'lastName', fieldName: 'Date Of Birth' },
-    { field: 'role', fieldName: 'Email' },
-    { field: 'role', fieldName: 'Result' },
-    { field: 'role', fieldName: 'Select' },
-    { field: 'role', fieldName: 'Action' },
+    { field: 'name', fieldName: 'Name' },
+    { field: 'dob', fieldName: 'Date Of Birth' },
+    { field: 'email', fieldName: 'Email' },
+    { field: 'result', fieldName: 'Result' },
+    { field: 'select', fieldName: 'Select' },
+    { field: 'action', fieldName: 'Action' },
   ];
 
-  const data = [
-    { id: 1, firstName: 'John', lastName: 'Doe', role: 'Admin' },
-    { id: 2, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 3, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 4, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 5, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 6, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 7, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 8, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 9, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 10, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 11, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-    { id: 12, firstName: 'John', lastName: 'Smith', role: 'Editor' },
-  ];
+  // const data = [
+  //   { id: 1, name: 'John', dob: 'Doe', email: 'Admin' },
+  //   { id: 2, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 3, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 4, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 5, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 6, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 7, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 8, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 9, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 10, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 11, name: 'John', dob: 'Smith', email: 'Editor' },
+  //   { id: 12, name: 'John', dob: 'Smith', email: 'Editor' },
+  // ];
 
+  useEffect(() => { 
+    fetch('http://localhost:5000/candidates')
+      .then(res => res.json())
+      .then(data => setCandidate(data))
+  }, []);
+
+  // console.log(candidate)
   return (
     <div className='mb-10 pt-20'>
-      <EditableTable columns={columns} rows={data} actions />
+      <EditableTable columns={columns} rows={candidate} actions />
     </div>
   );
 }
