@@ -32,7 +32,7 @@ function Table() {
     fetch('http://localhost:5000/candidates')
       .then(res => res.json())
       .then(data => setCandidate(data))
-  }, []);
+  }, [candidate]);
 
   // console.log(candidate)
   return (

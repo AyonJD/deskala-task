@@ -4,10 +4,17 @@ import {TiArrowSortedDown} from 'react-icons/ti';
 import './EditableTable.css';
 
 const EditableTable = ({ columns, rows, actions }) => {
-  console.log(rows)
+  // console.log(rows)
   const [isEditMode, setIsEditMode] = useState(false);
   const [rowIDToEdit, setRowIDToEdit] = useState(undefined);
   const [rowsState, setRowsState] = useState(rows);
+  const [result, setResult] = useState('');
+  const [open, setOpen] = useState(false);
+  const [rowID, setRowID] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
   useEffect(() => {
     setRowsState(rows)
    }, [rows])
@@ -15,20 +22,29 @@ const EditableTable = ({ columns, rows, actions }) => {
 
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  // console.log(rowsState);
-  // rows?.map(row => console.log(row))
+  // console.log(result);
   const handleEdit = (rowID) => {
     setIsEditMode(true);
     setEditedRow(undefined);
     setRowIDToEdit(rowID);
   }
 
+  //Delete row
   const handleRemoveRow = (rowID) => {
-    const newData = rowsState.filter(row => {
-      return row._id !== rowID ? row : null
-    });
 
-    setRowsState(newData);
+    //Delete row from database
+    fetch(`http://localhost:5000/candidates/${rowID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setRowsState(data)
+      }
+      )
   }
 
   const handleOnChangeField = (e, rowID) => {
@@ -46,18 +62,40 @@ const EditableTable = ({ columns, rows, actions }) => {
   }
 
   const handleSaveRowChanges = () => {
+    console.log('save row changes');
+    let newObject = {}
     setTimeout(() => {
       setIsEditMode(false);
 
       const newData = rowsState.map(row => {
         if (row._id === editedRow.id) {
-          if (editedRow.name) row.name = editedRow.name;
-          if (editedRow.dob) row.dob = editedRow.dob;
-          if (editedRow.email) row.email = editedRow.email;
+          newObject.name = name;
+          newObject.dob = dob;
+          newObject.email = email;
+          newObject.result = editedRow.result;
+
+          console.log(name, dob, email, result);
         }
 
         return row;
       })
+
+     console.log(newObject);
+
+      //PUT newData to API
+      
+        fetch(`http://localhost:5000/candidates/${editedRow.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newObject)
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+          }
+          )
 
       setRowsState(newData);
       setEditedRow(undefined)
@@ -81,7 +119,7 @@ const EditableTable = ({ columns, rows, actions }) => {
           if (index < pageSize) {
             return <tr key={row._id}>
               <td>
-                {row._id}
+                {index + 1}
               </td>
               <td>
                 { isEditMode && rowIDToEdit === row._id
@@ -90,7 +128,10 @@ const EditableTable = ({ columns, rows, actions }) => {
                     defaultValue={editedRow ? editedRow.name : row.name}
                     id={row._id}
                     name='name'
-                    onChange={ (e) => handleOnChangeField(e, row._id) }
+                    onChange={(e) => {
+                      handleOnChangeField(e, row._id)
+                      setName(e.target.value)
+                    } }
                   />
                   : row.name
                 }
@@ -102,26 +143,53 @@ const EditableTable = ({ columns, rows, actions }) => {
                     defaultValue={editedRow ? editedRow.dob : row.dob}
                     id={row._id}
                     name='dob'
-                    onChange={ (e) => handleOnChangeField(e, row._id) }
+                    onChange={(e) => {
+                      handleOnChangeField(e, row._id)
+                      setDob(e.target.value)
+                    } }
                   />
                   : row.dob
                 }
               </td>
               <td>
                 { isEditMode && rowIDToEdit === row._id
-                  ? <input onChange={e => handleOnChangeField(e, row._id)} name="email" defaultValue={row.email}>
+                  ? <input onChange={e => {
+                    handleOnChangeField(e, row._id)
+                    setEmail(e.target.value)
+                  }} name="email" defaultValue={row.email}>
                     
                   </input>
                   : row.email
                 }
               </td>
-              <td>Shortlist</td>
+              {/* <td>
+              { open && rowID === row._id
+                  ? result
+                  : row.result
+                }
+              </td> */}
+              <td>
+                { isEditMode && rowIDToEdit === row._id
+                  ? <input
+                    type='text'
+                    defaultValue={editedRow ? editedRow.result : row.result}
+                    id={row._id}
+                    name='result'
+                    onChange={ (e) => handleOnChangeField(e, row._id) }
+                  />
+                  : row.result
+                }
+              </td>
                 <td>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="m-1"><TiArrowSortedDown className='ml-5 mt-1'/></label>
-                        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a>Shortlist</a></li>
-                            <li><a>Reject</a></li>
+                    <div className="dropdown dropdown-end">
+                  <label onClick={() => {
+                    setOpen(!open)
+                    setRowID(row._id)
+                    // handleEdit(row._id)
+                        }} tabIndex="0" className="m-1"><TiArrowSortedDown className='ml-5 mt-1'/></label>
+                        <ul tabIndex="0" className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li onClick={() => setResult("Shortlist")}><a>Shortlist</a></li>
+                            <li onClick={() => setResult("Reject")}><a>Reject</a></li>
                         </ul>
                     </div>
                 </td>
@@ -136,7 +204,7 @@ const EditableTable = ({ columns, rows, actions }) => {
                   </button>
                 }
 
-                { isEditMode && rowIDToEdit === row._id
+                { open && rowIDToEdit === row._id
                   ? <button onClick={() => handleCancelEditing()} className='custom-table__action-btn'>
                     <BsXSquareFill />
                   </button>
