@@ -121,20 +121,21 @@ const EditableTable = ({ columns, rows, actions }) => {
                   </input>
                   : row.role
                 }
-                </td>
+              </td>
+              <td>Shortlist</td>
                 <td>
                     <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="m-1 flex items-denter">Shortlist<TiArrowSortedDown className='ml-5 mt-1'/></label>
+                        <label tabindex="0" class="m-1"><TiArrowSortedDown className='ml-5 mt-1'/></label>
                         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a>Item 1</a></li>
-                            <li><a>Item 2</a></li>
+                            <li><a>Shortlist</a></li>
+                            <li><a>Reject</a></li>
                         </ul>
                     </div>
                 </td>
               {actions &&
               <td>
                 { isEditMode && rowIDToEdit === row.id
-                  ? <button onClick={ () => handleSaveRowChanges() } className='custom-table__action-btn' disabled={!editedRow}>
+                  ? <button onClick={ () => handleSaveRowChanges() } className='custom-table__action-btn ' disabled={!editedRow}>
                     <BsSaveFill />
                   </button>
                   : <button  onClick={ () => handleEdit(row.id) } className='custom-table__action-btn'>

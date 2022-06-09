@@ -8,6 +8,7 @@ function Table() {
     { field: 'lastName', fieldName: 'Date Of Birth' },
     { field: 'role', fieldName: 'Email' },
     { field: 'role', fieldName: 'Result' },
+    { field: 'role', fieldName: 'Select' },
     { field: 'role', fieldName: 'Action' },
   ];
 
