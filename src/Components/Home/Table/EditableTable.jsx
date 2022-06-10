@@ -135,6 +135,7 @@ const EditableTable = ({ columns, rows, actions }) => {
               <td>
                 { isEditMode && rowIDToEdit === row._id
                   ? <input
+                    className='input input-bordered w-full max-w-xs'
                     type='text'
                     defaultValue={editedRow ? editedRow.name : row.name}
                     id={row._id}
@@ -150,7 +151,8 @@ const EditableTable = ({ columns, rows, actions }) => {
               <td>
                 { isEditMode && rowIDToEdit === row._id
                   ? <input
-                    type='text'
+                  className='input input-bordered w-full max-w-xs'
+                    type='date'
                     defaultValue={editedRow ? editedRow.dob : row.dob}
                     id={row._id}
                     name='dob'
@@ -162,9 +164,11 @@ const EditableTable = ({ columns, rows, actions }) => {
                   : row.dob
                 }
               </td>
-              <td>
+              <td className='col-span-2'>
                 { isEditMode && rowIDToEdit === row._id
-                  ? <input onChange={e => {
+                  ? <input
+                  className='input input-bordered w-full max-w-xs'
+                    onChange={e => {
                     handleOnChangeField(e, row._id)
                     setEmail(e.target.value)
                   }} name="email" defaultValue={row.email}>
