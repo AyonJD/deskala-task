@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Transition } from "@headlessui/react";
 import CustomLink from '../CustomLink/CustomLink';
 import { Link, useNavigate } from 'react-router-dom';
-import { BsFacebook, BsTwitter, BsInstagram } from 'react-icons/bs';
+import { BsFacebook, BsLinkedin, BsGithub } from 'react-icons/bs';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { signOut } from 'firebase/auth';
@@ -29,9 +29,9 @@ const Navbar = () => {
                         <p>Ayon Jodder | MERN Stack Developer</p>
                     </div>
                     <div className="right-icon flex text-white">
-                        <Link to="https://www.facebook.com/ayon.jodder.75/"><BsFacebook className='ml-8 text-xl'></BsFacebook></Link>
-                        <Link to="https://github.com/AyonJD"><BsTwitter className='ml-8 text-xl'></BsTwitter></Link>
-                        <Link to="https://github.com/AyonJD"><BsInstagram className='ml-8 text-xl'></BsInstagram></Link>
+                        <a href="https://www.facebook.com/ayon.jodder.75/"><BsFacebook className='ml-8 text-xl'></BsFacebook></a>
+                        <a href="https://www.linkedin.com/in/ayon-jodder/"><BsLinkedin className='ml-8 text-xl'></BsLinkedin></a>
+                        <a href="https://github.com/AyonJD"><BsGithub className='ml-8 text-xl'></BsGithub></a>
                     </div>
                 </div>
             </div>
