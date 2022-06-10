@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import EditableTable from "./EditableTable";
+import { BiUserPlus } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 function Table() {
   const [candidate, setCandidate] = useState([]);
+  const navigate = useNavigate()
   const columns = [
     { field: 'id', fieldName: '#' },
     { field: 'name', fieldName: 'Name' },
@@ -13,20 +16,6 @@ function Table() {
     { field: 'action', fieldName: 'Action' },
   ];
 
-  // const data = [
-  //   { id: 1, name: 'John', dob: 'Doe', email: 'Admin' },
-  //   { id: 2, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 3, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 4, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 5, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 6, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 7, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 8, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 9, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 10, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 11, name: 'John', dob: 'Smith', email: 'Editor' },
-  //   { id: 12, name: 'John', dob: 'Smith', email: 'Editor' },
-  // ];
 
   useEffect(() => { 
     fetch('http://localhost:5000/candidates')
@@ -38,6 +27,7 @@ function Table() {
   return (
     <div className='mb-10 pt-20'>
       <EditableTable columns={columns} rows={candidate} actions />
+      <button onClick={() => navigate('/create-candidate')} className='flex items-center btn btn-primary text-white'>Add Candidate <BiUserPlus className='ml-3 text-2xl'></BiUserPlus></button>
     </div>
   );
 }

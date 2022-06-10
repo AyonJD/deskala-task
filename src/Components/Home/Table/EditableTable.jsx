@@ -5,12 +5,12 @@ import './EditableTable.css';
 
 const EditableTable = ({ columns, rows, actions }) => {
   // console.log(rows)
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(undefined);
   const [rowIDToEdit, setRowIDToEdit] = useState(undefined);
   const [rowsState, setRowsState] = useState(rows);
   const [result, setResult] = useState('');
-  const [open, setOpen] = useState(false);
-  const [rowID, setRowID] = useState(false);
+  const [open, setOpen] = useState(undefined);
+  const [rowID, setRowID] = useState(undefined);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,6 +27,7 @@ const EditableTable = ({ columns, rows, actions }) => {
     setIsEditMode(true);
     setEditedRow(undefined);
     setRowIDToEdit(rowID);
+    setOpen(true);
   }
 
   //Delete row
@@ -57,24 +58,25 @@ const EditableTable = ({ columns, rows, actions }) => {
   }
 
   const handleCancelEditing = () => {
-    setIsEditMode(false);
+    setIsEditMode(undefined);
     setEditedRow(undefined);
+    setOpen(undefined);
   }
 
   const handleSaveRowChanges = () => {
     console.log('save row changes');
     let newObject = {}
     setTimeout(() => {
-      setIsEditMode(false);
+      setIsEditMode(undefined);
 
       const newData = rowsState.map(row => {
         if (row._id === editedRow.id) {
-          newObject.name = name;
-          newObject.dob = dob;
-          newObject.email = email;
-          newObject.result = editedRow.result;
+          newObject.name = name || row.name;
+          newObject.dob = dob || row.dob;
+          newObject.email = email || row.email;
+          newObject.result = result || row.result;
 
-          console.log(name, dob, email, result);
+          // console.log(name, dob, email, result);
         }
 
         return row;
@@ -93,15 +95,19 @@ const EditableTable = ({ columns, rows, actions }) => {
         })
           .then(res => res.json())
           .then(data => {
-            console.log(data);
+            // alert('Successfully updated');
+            // console.log('data', data);
+            if (data) {
+              setOpen(undefined)
+            }
           }
-          )
-
+      )
       setRowsState(newData);
       setEditedRow(undefined)
+      
     }, 1000)
   }
-
+// console.log(result);
   
   return (
     <div className=''>
@@ -170,26 +176,39 @@ const EditableTable = ({ columns, rows, actions }) => {
               </td> */}
               <td>
                 { isEditMode && rowIDToEdit === row._id
-                  ? <input
+                  ? <p
                     type='text'
-                    defaultValue={editedRow ? editedRow.result : row.result}
+                    // defaultValue=
                     id={row._id}
                     name='result'
-                    onChange={ (e) => handleOnChangeField(e, row._id) }
-                  />
+                    
+                  >{result ? result : row.result}</p>
                   : row.result
                 }
               </td>
                 <td>
                     <div className="dropdown dropdown-end">
                   <label onClick={() => {
-                    setOpen(!open)
+                    // setOpen(open)
+
                     setRowID(row._id)
                     // handleEdit(row._id)
                         }} tabIndex="0" className="m-1"><TiArrowSortedDown className='ml-5 mt-1'/></label>
                         <ul tabIndex="0" className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li onClick={() => setResult("Shortlist")}><a>Shortlist</a></li>
-                            <li onClick={() => setResult("Reject")}><a>Reject</a></li>
+                    <li onClick={() => {
+                      setResult("Shortlist")
+                      setEditedRow({
+                        id: rowID,
+                        result: result
+                      })
+                            }}><a>Shortlist</a></li>
+                    <li onClick={() => {
+                      setResult("Reject")
+                      setEditedRow({
+                        id: rowID,
+                        result: result
+                      })
+                            }}><a>Reject</a></li>
                         </ul>
                     </div>
                 </td>
