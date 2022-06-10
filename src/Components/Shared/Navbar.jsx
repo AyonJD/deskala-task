@@ -54,6 +54,12 @@ const Navbar = () => {
                                     >
                                         Home
                                     </CustomLink>
+                                    <CustomLink
+                                        to="/create-candidate"
+                                        className="nav-btn text-xl px-3 py-2 rounded-md font-medium"
+                                    >
+                                        Create Candidate
+                                    </CustomLink>
                                     
 
                                 </div>
@@ -132,6 +138,12 @@ const Navbar = () => {
                                     className="hover:bg-gray-700 hover:text-white text-white block px-3 py-2 rounded-md text-base font-medium"
                                 >
                                     Home
+                                </CustomLink>
+                                <CustomLink
+                                    to="/create-candidate"
+                                    className="hover:bg-gray-700 hover:text-white text-white block px-3 py-2 rounded-md text-base font-medium"
+                                >
+                                    Create Candidate
                                 </CustomLink>
                                 
                             </div>

@@ -36,7 +36,7 @@ const AddCandidate = () => {
         reset()
     }
     return (
-        <>
+        <div className='my-10'>
             <form onSubmit={handleSubmit(onSubmitParam)}>
                 <div className='md:flex w-2/3 mx-auto'>
                     <div className='flex-1 mr-2'>
@@ -188,15 +188,15 @@ const AddCandidate = () => {
                             </label>
                         </div>
 
-                        <div className="mt-10 text-right">
-                            <button onClick={() => navigate('/')} className='btn btn-outline w-[130px] btn-primary hover-text mr-5'>Cancel</button>
+                        <div className="mt-10 text-center md:text-right">
+                            <button onClick={() => navigate('/')} className='btn mb-2 md:mb-0 btn-outline w-[130px] btn-primary hover-text md:mr-5'>Cancel</button>
                             <input className='btn btn-primary w-[130px] text-white' type="submit" value="Sign Up" />
                         </div>
                     </div>
                 </div>
 
             </form>
-        </>
+        </div>
     );
 };
 

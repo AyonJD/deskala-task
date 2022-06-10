@@ -8,6 +8,8 @@ import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
 import Spinner from '../Spinner/Spinner';
+import { sendEmailVerification } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -37,9 +39,7 @@ const SignUp = () => {
         signInError = <p className='text-red-500'><small>{error?.message || gError?.message}</small></p>
     }
 
-    if (EmailUser || gUser) {
-        console.log(EmailUser || gUser);
-    }
+    
 
     const onSubmitParam = async data => {
         const { email, password, number } = data;
@@ -55,9 +55,10 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    toast.success("User created successfully")
                 }
-            )
+        )
+
         navigate('/');
         reset()
     }

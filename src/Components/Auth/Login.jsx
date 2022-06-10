@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
 import GithubLogo from '../../Assets/Social/github.svg';
-import { useAuthState, useSignInWithFacebook, useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithEmailAndPassword, useSignInWithFacebook, useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
+import toast from 'react-hot-toast';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import Spinner from '../Spinner/Spinner';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
@@ -15,15 +18,47 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [user] = useAuthState(auth);
     const navigate = useNavigate()
+    const [
+        signInWithEmailAndPassword, user1,
+        loading,
+        error1,
+    ] = useSignInWithEmailAndPassword(auth);
 
     if (user) { 
         navigate('/')
     }
+    //Show loader when loading
+
 
     const onSubmitParam = data => {
-        console.log(data);
-        reset()
+        signInWithEmailAndPassword(data.email, data.password);
     }
+    useEffect(() => {
+        if (gError || fError || gitError || error1) {
+            toast.error("Wrong email or password!", {
+                toastId: "passWrong"
+            });
+            return;
+        }
+    }, [gError, error1, gitError, fError]);
+    const handleResetPassword = () => {
+        if (!email) {
+            toast.error("Please enter your email", {
+                toastId: "nomail"
+            });
+            return;
+        } else {
+            sendPasswordResetEmail(email);
+            toast.success("Password reset link sent", {
+                toastId: "nomail"
+            });
+        }
+    }
+
+    if (gLoading || fLoading || gitLoading || loading) {
+        return <Spinner />
+    }
+
 
     return (
         <>
