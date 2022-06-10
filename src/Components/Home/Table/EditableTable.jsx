@@ -115,8 +115,8 @@ const EditableTable = ({ columns, rows, actions }) => {
 // console.log(result);
   
   return (
-    <div className=''>
-      <table className='w-full table '>
+    <div className='overflow-x-auto overflow-y-hidden'>
+      <table className='w-full table'>
         <thead >
         <tr>
           {columns.map((column) => {
@@ -173,12 +173,7 @@ const EditableTable = ({ columns, rows, actions }) => {
                   : row.email
                 }
               </td>
-              {/* <td>
-              { open && rowID === row._id
-                  ? result
-                  : row.result
-                }
-              </td> */}
+              
               <td>
                 { isEditMode && rowIDToEdit === row._id
                   ? <p
