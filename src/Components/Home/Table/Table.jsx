@@ -27,7 +27,7 @@ function Table() {
   return (
     <div className='mb-10 pt-20'>
       <EditableTable columns={columns} rows={candidate} actions />
-      <button onClick={() => navigate('/create-candidate')} className='flex items-center btn btn-primary text-white'>Add Candidate <BiUserPlus className='ml-3 text-2xl'></BiUserPlus></button>
+      <button onClick={() => navigate('/create-candidate')} className='mt-2 ml-4 md:ml-0 flex items-center btn btn-primary text-white'>Add Candidate <BiUserPlus className='ml-3 text-2xl'></BiUserPlus></button>
     </div>
   );
 }

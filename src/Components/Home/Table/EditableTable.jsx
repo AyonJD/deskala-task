@@ -116,6 +116,7 @@ const EditableTable = ({ columns, rows, actions }) => {
   
   return (
     <div className='overflow-x-auto overflow-y-hidden'>
+      <h1 className='text-xl font-medium mb-10 md:mb-2 text-center md:text-left'>Data of { rowsState?.length} Candidates</h1>
       <table className='w-full table'>
         <thead >
         <tr>

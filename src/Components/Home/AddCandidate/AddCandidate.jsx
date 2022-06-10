@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const AddCandidate = () => {
@@ -28,7 +29,7 @@ const AddCandidate = () => {
             body: JSON.stringify(newData)
         }).then(res => res.json())
             .then(data => {
-                console.log(data);
+                toast.success("Candidate successfully added");
                 navigate('/');
             }
             ).catch(err => console.log(err));
@@ -37,8 +38,9 @@ const AddCandidate = () => {
     }
     return (
         <div className='my-10'>
-            <form onSubmit={handleSubmit(onSubmitParam)}>
-                <div className='md:flex w-2/3 mx-auto'>
+            <h1 className='text-xl font-medium mb-8 text-center'>Please fill the form to add a candidate</h1>
+            <form className='shadow-xl w-2/3 mx-auto pb-10' onSubmit={handleSubmit(onSubmitParam)}>
+                <div className='md:flex w-full px-3 md:px-0 md:w-2/3 mx-auto'>
                     <div className='flex-1 mr-2'>
                         <div className="form-control w-full">
                             <label className="label">
@@ -190,7 +192,7 @@ const AddCandidate = () => {
 
                         <div className="mt-10 text-center md:text-right">
                             <button onClick={() => navigate('/')} className='btn mb-2 md:mb-0 btn-outline w-[130px] btn-primary hover-text md:mr-5'>Cancel</button>
-                            <input className='btn btn-primary w-[130px] text-white' type="submit" value="Sign Up" />
+                            <input className='btn btn-primary w-[130px] text-white' type="submit" value="Add" />
                         </div>
                     </div>
                 </div>
