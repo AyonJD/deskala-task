@@ -7,7 +7,32 @@ const AddCandidate = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const onSubmitParam = async (data) => {
-        console.log(data);
+
+        const newData = {
+            name: data.name,
+            email: "N/A",
+            dob: data.date,
+            address: data.address,
+            age: data.age,
+            state: data.state,
+            pin: data.pin,
+            result: "Shortlist"
+        }
+        // console.log(newData);
+        //POST newDate to API
+        fetch('https://murmuring-ridge-59282.herokuapp.com/candidates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+        }).then(res => res.json())
+            .then(data => {
+                console.log(data);
+                navigate('/');
+            }
+            ).catch(err => console.log(err));
+
         reset()
     }
     return (
@@ -152,7 +177,7 @@ const AddCandidate = () => {
                                 className="input input-bordered w-full"
                                 {...register('pin', {
                                     required: 'Pin is required',
-                                    
+
                                 })}
                                 onKeyUp={() => {
                                     trigger('pin')

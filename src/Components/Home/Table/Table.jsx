@@ -18,7 +18,7 @@ function Table() {
 
 
   useEffect(() => { 
-    fetch('http://localhost:5000/candidates')
+    fetch('https://murmuring-ridge-59282.herokuapp.com/candidates')
       .then(res => res.json())
       .then(data => setCandidate(data))
   }, [candidate]);

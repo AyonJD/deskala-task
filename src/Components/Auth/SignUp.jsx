@@ -46,7 +46,7 @@ const SignUp = () => {
         const registeredUser = { email, password, number };
         await createUserWithEmailAndPassword(email, password);
 
-        fetch(`http://localhost:5000/users`, {
+        fetch(`https://murmuring-ridge-59282.herokuapp.com/users`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'

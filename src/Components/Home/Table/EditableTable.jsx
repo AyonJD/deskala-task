@@ -15,13 +15,14 @@ const EditableTable = ({ columns, rows, actions }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
+
+
   useEffect(() => {
     setRowsState(rows)
    }, [rows])
   const [editedRow, setEditedRow] = useState();
 
   const [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   // console.log(result);
   const handleEdit = (rowID) => {
     setIsEditMode(true);
@@ -34,7 +35,8 @@ const EditableTable = ({ columns, rows, actions }) => {
   const handleRemoveRow = (rowID) => {
 
     //Delete row from database
-    fetch(`http://localhost:5000/candidates/${rowID}`, {
+    // if (window.confirm('Are you sure you want to delete this row?')) {
+      fetch(`https://murmuring-ridge-59282.herokuapp.com/candidates/${rowID}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -46,6 +48,9 @@ const EditableTable = ({ columns, rows, actions }) => {
         setRowsState(data)
       }
       )
+    // } else {
+    //   alert('nothing')
+    // }
   }
 
   const handleOnChangeField = (e, rowID) => {
@@ -86,7 +91,7 @@ const EditableTable = ({ columns, rows, actions }) => {
 
       //PUT newData to API
       
-        fetch(`http://localhost:5000/candidates/${editedRow.id}`, {
+        fetch(`https://murmuring-ridge-59282.herokuapp.com/candidates/${editedRow.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
