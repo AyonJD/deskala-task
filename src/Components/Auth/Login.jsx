@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import FacebookLogo from '../../Assets/Social/facebook.svg';
 import GoogleLogo from '../../Assets/Social/google.svg';
@@ -17,18 +17,21 @@ const Login = () => {
     const [signInWithGithub, gitUser, gitLoading, gitError] = useSignInWithGithub(auth);
     const [email, setEmail] = useState('');
     const [user] = useAuthState(auth);
-    const navigate = useNavigate()
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || '/';
     const [
         signInWithEmailAndPassword, user1,
         loading,
         error1,
     ] = useSignInWithEmailAndPassword(auth);
 
-    if (user) { 
-        navigate('/')
-    }
-    //Show loader when loading
-
+    //if user is logged in, redirect to the last visited page
+    useEffect(() => {
+        if (user) {
+            navigate(from, { replace: true })
+        }
+    })
 
     const onSubmitParam = data => {
         signInWithEmailAndPassword(data.email, data.password);
@@ -41,19 +44,7 @@ const Login = () => {
             return;
         }
     }, [gError, error1, gitError, fError]);
-    const handleResetPassword = () => {
-        if (!email) {
-            toast.error("Please enter your email", {
-                toastId: "nomail"
-            });
-            return;
-        } else {
-            sendPasswordResetEmail(email);
-            toast.success("Password reset link sent", {
-                toastId: "nomail"
-            });
-        }
-    }
+    
 
     if (gLoading || fLoading || gitLoading || loading) {
         return <Spinner />
