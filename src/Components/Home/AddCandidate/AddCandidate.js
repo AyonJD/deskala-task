@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 const AddCandidate = () => {
     const { register, formState: { errors }, handleSubmit, reset, trigger } = useForm();
+    const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const onSubmitParam = async (data) => {
         console.log(data);
@@ -25,15 +27,10 @@ const AddCandidate = () => {
                                     required: {
                                         value: true,
                                         message: 'Name is Required'
-                                    },
-                                    // pattern: {
-                                    //     value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                                    //     message: 'Provide a valid Email'
-                                    // }
+                                    }
                                 })}
                                 onKeyUp={(e) => {
                                     trigger('name')
-                                    // setEmail(e.target.value)
                                 }}
                             />
                             <label className="label">
@@ -53,11 +50,7 @@ const AddCandidate = () => {
                                     required: {
                                         value: true,
                                         message: 'Date is Required'
-                                    },
-                                    // pattern: {
-                                    //     value: /[2-9]{2}\d{8}/,
-                                    //     message: 'Provide a valid Date'
-                                    // }
+                                    }
                                 })}
                                 onKeyUp={(e) => {
                                     trigger('date')
@@ -88,7 +81,7 @@ const AddCandidate = () => {
                             />
                             <label className="label">
                                 {errors.age?.type === 'required' && <span className="label-text-alt text-red-500">{errors.age.message}</span>}
-                                
+
                             </label>
                         </div>
 
@@ -107,11 +100,7 @@ const AddCandidate = () => {
                                     required: {
                                         value: true,
                                         message: 'Address is Required'
-                                    },
-                                    // pattern: {
-                                    //     value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                                    //     message: 'Provide a valid Email'
-                                    // }
+                                    }
                                 })}
                                 onKeyUp={(e) => {
                                     trigger('address')
@@ -140,9 +129,12 @@ const AddCandidate = () => {
                                     trigger('state')
                                 }}
                             >
-                                <option disabled selected>Who shot first?</option>
-                                <option>Han Solo</option>
-                                <option>Greedo</option>
+                                <option disabled selected>Select your state</option>
+                                <option>California</option>
+                                <option>Sandiego</option>
+                                <option>Los Angeles</option>
+                                <option>New York</option>
+                                <option>Miami</option>
                             </select>
 
                             <label className="label">
@@ -160,10 +152,7 @@ const AddCandidate = () => {
                                 className="input input-bordered w-full"
                                 {...register('pin', {
                                     required: 'Pin is required',
-                                    pattern: {
-                                        // value: /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/,
-                                        // message: "At least one uppercase, one lowercase, one number and one special character"
-                                    }
+                                    
                                 })}
                                 onKeyUp={() => {
                                     trigger('pin')
@@ -174,11 +163,13 @@ const AddCandidate = () => {
                             </label>
                         </div>
 
+                        <div className="mt-10 text-right">
+                            <button onClick={() => navigate('/')} className='btn btn-outline w-[130px] btn-primary hover-text mr-5'>Cancel</button>
+                            <input className='btn btn-primary w-[130px] text-white' type="submit" value="Sign Up" />
+                        </div>
                     </div>
                 </div>
-                <div className="text-center mt-10">
-                    <input className='btn btn-primary w-1/2 text-white' type="submit" value="Sign Up" />
-                </div>
+
             </form>
         </>
     );
